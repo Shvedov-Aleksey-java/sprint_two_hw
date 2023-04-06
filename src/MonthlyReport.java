@@ -8,6 +8,7 @@ public class MonthlyReport {
     private int monthNumber;
     private int year;
     private String expansion;
+    private String price;
 
     public ArrayList<PositionMonth> getPositions() {
         return positions;
@@ -35,12 +36,12 @@ public class MonthlyReport {
     public MonthlyReport(String report) {
         determinant(report);
         this.report = report;
+        this.price = methods.readFileContents(report);
         this.positions = new ArrayList<>();
-        distribution();
+        distribution(this.price);
     }
 
-    private void distribution(){
-        String price = methods.readFileContents(report);
+    private void distribution(String price){
         String[] prices = price.split("\n");
         for (int i = 1; i < prices.length; i++) {
             String[] bumm = prices[i].split(", ");

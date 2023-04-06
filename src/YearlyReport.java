@@ -2,8 +2,14 @@ import java.util.ArrayList;
 
 public class YearlyReport {
     ReportingMethods methods = new ReportingMethods();
+    private String price;
     private String report;
     private ArrayList<PositionYear> positions;
+
+    public String getPrice() {
+        return price;
+    }
+
     private boolean yearY;
     private int year;
     private String expansion;
@@ -31,14 +37,14 @@ public class YearlyReport {
     public YearlyReport(String report) {
         determinant(report);
         this.report = report;
+        this.price = methods.readFileContents(report);
         positions = new ArrayList<>();
-        distribution();
+        distribution(this.price);
 
 
     }
 
-    private void distribution(){
-        String price = methods.readFileContents(report);
+    private void distribution(String price){
         String[] prices = price.split("\n");
         for (int i = 1; i < prices.length; i++) {
             String[] bumm = prices[i].split(", ");
