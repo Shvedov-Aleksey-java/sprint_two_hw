@@ -2,9 +2,9 @@ import java.util.Scanner;
 
 public class Main {
 
+
     public static void main(String[] args) {
         // Поехали!
-        PositionMonth n = new PositionMonth();
         ReportingMethods methods = new ReportingMethods();
         Scanner s = new Scanner(System.in);
         while (true){
@@ -18,10 +18,13 @@ public class Main {
                     methods.countAllYearlyReport();
                     break;
                 case 3:
+                    methods.dataReconciliation();
                     break;
                 case 4:
+                    methods.informationAboutAllMonthlyReports();
                     break;
                 case 5:
+                    methods.informationAboutTheAnnualReport();
                     break;
                 case 6:
                     return;
