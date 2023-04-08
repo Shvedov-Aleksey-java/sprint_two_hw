@@ -17,6 +17,7 @@ public class PositionYear {
         return amount;
     }
 
+
     public ArrayList<Boolean> getIsExpense() {
         return isExpense;
     }
