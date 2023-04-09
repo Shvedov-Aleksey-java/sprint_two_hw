@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class PositionMonth {
     private ArrayList<String> itemName;
@@ -56,9 +57,9 @@ public class PositionMonth {
         }
         this.price = this.file.split("\n");
         for (int i = 1; i < price.length; i++) {
-            String[] position = price[i].split(", ");
+            String[] position = price[i].split("[,]");
             this.itemName.add(position[0]);
-            this.isExpense.add(Boolean.parseBoolean(position[1]));
+            this.isExpense.add(Boolean.parseBoolean(position[1].toLowerCase(Locale.ROOT)));
             this.quantity.add(Integer.parseInt(position[2]));
             this.sumOfOne.add(Double.parseDouble(position[3]));
         }

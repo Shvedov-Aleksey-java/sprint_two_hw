@@ -44,7 +44,7 @@ public class PositionYear {
         }
         this.price = this.file.split("\n");
         for (int i = 1; i < price.length; i++) {
-            String[] position = price[i].split(", ");
+            String[] position = price[i].split("[,]");
             this.monthNumber.add(Integer.parseInt(position[0]));
             this.amount.add(Double.parseDouble(position[1]));
             this.isExpense.add(Boolean.parseBoolean(position[2]));
