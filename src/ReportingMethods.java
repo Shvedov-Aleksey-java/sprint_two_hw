@@ -89,8 +89,8 @@ public class ReportingMethods {
                         }
                     }
                 }
-                System.out.println("Самый прибыльный товар: " + nameFalse + "-" + expenseFalse);
-                System.out.println("Самая большая трата: " + nameTrue + "-" + expenseTrue);
+                System.out.println("Самый прибыльный товар: " + nameFalse + " " + expenseFalse);
+                System.out.println("Самая большая трата: " + nameTrue + " " + expenseTrue);
             }
         }
         void informationAboutTheAnnualReport(){
@@ -113,7 +113,7 @@ public class ReportingMethods {
                 }
                 expenses += expenseTrue;
                 income += expenseFalse;
-                System.out.println("Прибыль за: " + nameMonth.get(monthNumber - 1) + " составила: " + (expenseTrue - expenseFalse));
+                System.out.println("Прибыль за: " + nameMonth.get(monthNumber - 1) + " составила: " + (expenseFalse - expenseTrue));
             }
             System.out.println("Средний расход за все месяцы в году: " + (expenses / 12));
             System.out.println("Средний доход за все месяцы в году: " + (income / 12));
