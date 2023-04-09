@@ -47,7 +47,7 @@ public class PositionYear {
             String[] position = price[i].split("[,]");
             this.monthNumber.add(Integer.parseInt(position[0]));
             this.amount.add(Double.parseDouble(position[1]));
-            this.isExpense.add(Boolean.parseBoolean(position[2]));
+            this.isExpense.add(Boolean.parseBoolean(position[2].replaceAll("[^a-zA-Z]", "")));
         }
         String[] reports = this.path.split("\\W");
         this.yearNumber = Integer.parseInt(reports[reports.length - 2]);
