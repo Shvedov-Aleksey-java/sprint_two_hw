@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -5,8 +6,8 @@ public class Main {
 
     public static void main(String[] args) {
         // Поехали!
-        ReportingMethods methods = new ReportingMethods();
         Scanner s = new Scanner(System.in);
+        ReportEngine methods = new ReportEngine(new Scanner(System.in));
         while (true){
             printMenu();
             int number = s.nextInt();
