@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -6,11 +5,25 @@ public class Main {
 
     public static void main(String[] args) {
         // Поехали!
-        Scanner s = new Scanner(System.in);
-        ReportEngine methods = new ReportEngine(new Scanner(System.in));
+        Scanner scanner = new Scanner(System.in);
+        ReportEngine methods = new ReportEngine();
+        /*
+        когда я передаю обьект сканер в констркетор а не пишу как сейчас он мне кидает исключенние:
+        Введите номер команды.
+1
+введите путь к файлу: 1
+Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index -1 out of bounds for length 1
+	at ReportEngine.addMonthlyReport(ReportEngine.java:34)
+	at ReportEngine.countAllMonthlyReport(ReportEngine.java:91)
+	at Main.main(Main.java:15)
+
+Process finished with exit code 1
+
+когда запускаю отладку если передать сканер то он передает вместе сэтим обьектом то чиссло которое я ввел и не реализуетс в другом классе.
+         */
         while (true){
             printMenu();
-            int number = s.nextInt();
+            int number = scanner.nextInt();
             switch (number){
                 case 1:
                     methods.countAllMonthlyReport();

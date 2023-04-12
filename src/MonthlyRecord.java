@@ -1,10 +1,8 @@
-import java.util.ArrayList;
-
 public class MonthlyRecord {
     private String itemName;
-    private Boolean isExpense;
-    private Integer quantity;
-    private Double sumOfOne;
+    private boolean isExpense;
+    private int quantity;
+    private double sumOfOne;
 
     public String getItemName() {
         return itemName;
@@ -14,27 +12,27 @@ public class MonthlyRecord {
         this.itemName = itemName;
     }
 
-    public Boolean getExpense() {
+    public boolean getExpense() {
         return isExpense;
     }
 
-    public void setExpense(Boolean expense) {
+    public void setExpense(boolean expense) {
         isExpense = expense;
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public Double getSumOfOne() {
+    public double getSumOfOne() {
         return sumOfOne;
     }
 
-    public void setSumOfOne(Double sumOfOne) {
+    public void setSumOfOne(double sumOfOne) {
         this.sumOfOne = sumOfOne;
     }
 }

@@ -1,29 +1,29 @@
 public class YearlyRecord {
-    private Integer monthNumber;
-    private Double amount;
-    private Boolean isExpense;
+    private int monthNumber;
+    private double amount;
+    private boolean isExpense;
 
-    public Integer getMonthNumber() {
+    public int getMonthNumber() {
         return monthNumber;
     }
 
-    public void setMonthNumber(Integer monthNumber) {
+    public void setMonthNumber(int monthNumber) {
         this.monthNumber = monthNumber;
     }
 
-    public Double getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    public Boolean getExpense() {
+    public boolean getExpense() {
         return isExpense;
     }
 
-    public void setExpense(Boolean expense) {
+    public void setExpense(boolean expense) {
         isExpense = expense;
     }
 }

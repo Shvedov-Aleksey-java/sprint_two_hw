@@ -1,25 +1,23 @@
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
 public class ReportEngine {
+
     private ArrayList<String> nameMonth = new ArrayList<>();
     {
-        Collections.addAll(nameMonth, "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль",
-                "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь");
+        Collections.addAll(nameMonth, "РЇРЅРІР°СЂСЊ", "Р¤РµРІСЂР°Р»СЊ", "РњР°СЂС‚", "РђРїСЂРµР»СЊ", "РњР°Р№", "РСЋРЅСЊ", "РСЋР»СЊ",
+                "РђРІРіСѓСЃС‚", "РЎРµРЅС‚СЏР±СЂСЊ", "РћРєС‚СЏР±СЂСЊ", "РќРѕСЏР±СЂСЊ", "Р”РµРєР°Р±СЂСЊ");
     }
 
     private ArrayList<MonthlyReport> monthlyReport;
     private ArrayList<YearlyReport> yearlyReport;
-    Scanner s;
-    ReportEngine(Scanner s){
-        this.s = s;
+    ReportEngine(){
         monthlyReport = new ArrayList<>();
         yearlyReport = new ArrayList<>();
     }
-
-
     void addMonthlyReport(String path){
         monthlyReport.add(new MonthlyReport());
         MonthlyReport report = monthlyReport.get(monthlyReport.size() - 1);
@@ -48,13 +46,7 @@ public class ReportEngine {
             report.getRecords().get(position).setItemName(data[0]);
             report.getRecords().get(position).setQuantity(Integer.parseInt(data[2]));
             report.getRecords().get(position).setSumOfOne(Double.parseDouble(data[3]));
-            if (report.getRecords().get(position).getExpense()){
-                report.setMonthlyExpense(report.getMonthlyExpense() + report.getRecords().get(position).getSumOfOne()
-                 * report.getRecords().get(position).getQuantity());
-            } else {
-                report.setMonthlyIncome(report.getMonthlyIncome() + report.getRecords().get(position).getSumOfOne()
-                        * report.getRecords().get(position).getQuantity());
-            }
+
         }
     }
 
@@ -81,103 +73,132 @@ public class ReportEngine {
         try {
             return Files.readAllLines(Path.of(path));
         } catch (IOException e) {
-            System.out.println("Невозможно прочитать файл с месячным отчётом. Возможно файл не находится в нужной директории.");
+            System.out.println("РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРѕС‡РёС‚Р°С‚СЊ С„Р°Р№Р» СЃ РјРµСЃСЏС‡РЅС‹Рј РѕС‚С‡С‘С‚РѕРј. Р’РѕР·РјРѕР¶РЅРѕ С„Р°Р№Р» РЅРµ РЅР°С…РѕРґРёС‚СЃСЏ РІ РЅСѓР¶РЅРѕР№ РґРёСЂРµРєС‚РѕСЂРёРё.");
             return Collections.emptyList();
         }
     }
 
     void countAllMonthlyReport(){
-        for (int i = 0; i < 3; i++) {
-            System.out.println("введите путь к файлу: " + (i + 1));
-            String path = s.nextLine();
-            addMonthlyReport(path);
-        }
+        File folder = new File("./resources/");
+        File[] listOfFiles = folder.listFiles();
+        String path = "resources/";
+        addMonthlyReport(path + listOfFiles[0].getName());
+        addMonthlyReport(path + listOfFiles[1].getName());
+        addMonthlyReport(path + listOfFiles[2].getName());
+        System.out.println("С„Р°Р№Р» СѓСЃРїРµС€РЅРѕ СЃС‡РёС‚Р°РЅ");
     }
     void countAllYearlyReport(){
-        System.out.println("введите путь файлу:");
-        String path = s.nextLine();
-        addYearlyReport(path);
+        File folder = new File("./resources/");
+        File[] listOfFiles = folder.listFiles();
+        String path = "resources/";
+        addYearlyReport(path + listOfFiles[3].getName());
+
     }
-    void dataReconciliation(){
+    void dataReconciliation() {
+        if (yearlyReport.isEmpty() || monthlyReport.isEmpty()) {
+            System.out.println("РЎРЅР°С‡Р°Р»Р° СЃС‡РёС‚Р°Р№С‚Рµ РјРµСЃСЏС‡РЅС‹Рµ/РіРѕРґРѕРІС‹Рµ РѕС‡С‚РµС‚С‹");
+            return;
+        }
+        HashMap<Integer, Double> monthExpense = new HashMap<>();
+        HashMap<Integer, Double> monthIncome = new HashMap<>();
         boolean isEmpty = true;
-        for (YearlyReport reportYear:yearlyReport){
-            for (YearlyRecord recordYear:reportYear.getRecords()){
-                for (MonthlyReport reportMonth:monthlyReport){
-                    if (
-                            reportYear.getYear() == reportMonth.getYear()
-                            && recordYear.getMonthNumber() == reportMonth.getMonth()
-                            && recordYear.getExpense() && recordYear.getAmount() != reportMonth.getMonthlyExpense()
-                    ){
-                        System.out.println("обнаружено несоответствие в месеце: " + reportMonth.getMonth());
+        for (MonthlyReport report : monthlyReport) {
+            double expense = 0;
+            double income = 0;
+            for (MonthlyRecord monthlyRecord : report.getRecords()) {
+                if (monthlyRecord.getExpense()) {
+                    expense += monthlyRecord.getQuantity() * monthlyRecord.getSumOfOne();
+                } else {
+                    income += monthlyRecord.getQuantity() * monthlyRecord.getSumOfOne();
+                }
+            }
+            monthExpense.put(report.getMonth(), expense);
+            monthIncome.put(report.getMonth(), income);
+        }
+        for (YearlyReport yearlyReport : yearlyReport) {
+            for (YearlyRecord yearlyRecord : yearlyReport.getRecords()) {
+                if (yearlyRecord.getExpense()) {
+                    if (yearlyRecord.getAmount() == monthExpense.get(yearlyRecord.getMonthNumber())) {
+
+                    }else {
+                        System.out.println("РѕР±РЅР°СЂСѓР¶РµРЅРѕ РЅРµСЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ РІ РјРµСЃРµС†Рµ: " + yearlyRecord.getMonthNumber());
                         isEmpty = false;
-                    } else if (
-                            reportYear.getYear() == reportMonth.getYear()
-                                    && recordYear.getMonthNumber() == reportMonth.getMonth()
-                                    && (!(recordYear.getExpense())) && recordYear.getAmount() != reportMonth.getMonthlyIncome()
-                    ){
-                        System.out.println("обнаружено несоответствие в месеце: " + reportMonth.getMonth());
+                    }
+                } else {
+                    if (yearlyRecord.getAmount() == monthIncome.get(yearlyRecord.getMonthNumber())) {
+
+                    }else {
+                        System.out.println(yearlyRecord.getAmount());
                         isEmpty = false;
                     }
                 }
             }
         }
-        if (isEmpty){
-            System.out.println("операция успешно завершена");
+        if (isEmpty) {
+            System.out.println("РѕРїРµСЂР°С†РёСЏ СѓСЃРїРµС€РЅРѕ Р·Р°РІРµСЂС€РµРЅР°");
         }
         }
 
 
-        void informationAboutAllMonthlyReports(){
-
-        for (MonthlyReport reportMonth:monthlyReport){
-            System.out.println(nameMonth.get(reportMonth.getMonth() - 1));
-            double expenseTrue = 0;
-            double expenseFalse = 0;
-            String nameFalse = null;
-            String nameTrue = null;
-            for (MonthlyRecord monthlyRecord: reportMonth.getRecords()){
-                if (
-                        monthlyRecord.getExpense()
-                        && monthlyRecord.getQuantity() * monthlyRecord.getSumOfOne() > expenseTrue
-                ){
-                    expenseTrue = monthlyRecord.getQuantity() * monthlyRecord.getSumOfOne();
-                    nameTrue = monthlyRecord.getItemName();
-                }else if ((!(monthlyRecord.getExpense()))
-                && monthlyRecord.getQuantity() * monthlyRecord.getSumOfOne() > expenseFalse){
-                    expenseFalse = monthlyRecord.getQuantity() * monthlyRecord.getSumOfOne();
-                    nameFalse = monthlyRecord.getItemName();
-                }
+        void informationAboutAllMonthlyReports () {
+            if (monthlyReport.isEmpty()) {
+                System.out.println("РЎРЅР°С‡Р°Р»Р° СЃС‡РёС‚Р°Р№С‚Рµ РјРµСЃСЏС‡РЅС‹Рµ РѕС‡С‚РµС‚С‹");
+                return;
             }
-            System.out.println("Самый прибыльный товар: " + nameFalse + " " + expenseFalse);
-            System.out.println("Самая большая трата: " + nameTrue + " " + expenseTrue);
-        }
+
+            for (MonthlyReport reportMonth : monthlyReport) {
+                System.out.println(nameMonth.get(reportMonth.getMonth() - 1));
+                double expenseTrue = 0;
+                double expenseFalse = 0;
+                String nameFalse = null;
+                String nameTrue = null;
+                for (MonthlyRecord monthlyRecord : reportMonth.getRecords()) {
+                    if (
+                            monthlyRecord.getExpense()
+                                    && monthlyRecord.getQuantity() * monthlyRecord.getSumOfOne() > expenseTrue
+                    ) {
+                        expenseTrue = monthlyRecord.getQuantity() * monthlyRecord.getSumOfOne();
+                        nameTrue = monthlyRecord.getItemName();
+                    } else if ((!(monthlyRecord.getExpense()))
+                            && monthlyRecord.getQuantity() * monthlyRecord.getSumOfOne() > expenseFalse) {
+                        expenseFalse = monthlyRecord.getQuantity() * monthlyRecord.getSumOfOne();
+                        nameFalse = monthlyRecord.getItemName();
+                    }
+                }
+                System.out.println("РЎР°РјС‹Р№ РїСЂРёР±С‹Р»СЊРЅС‹Р№ С‚РѕРІР°СЂ: " + nameFalse + " " + expenseFalse);
+                System.out.println("РЎР°РјР°СЏ Р±РѕР»СЊС€Р°СЏ С‚СЂР°С‚Р°: " + nameTrue + " " + expenseTrue);
+            }
         }
 
-        void informationAboutTheAnnualReport(){
-        for (YearlyReport yearlyReport:yearlyReport){
-            HashMap<Integer, Double> expenses = new HashMap<>();
-            HashMap<Integer, Double> income = new HashMap<>();
-            double expensesSum = 0;
-            double incomeSum = 0;
-            for (YearlyRecord yearlyRecord: yearlyReport.getRecords()){
-                if (yearlyRecord.getExpense()){
-                    expenses.put(yearlyRecord.getMonthNumber(), yearlyRecord.getAmount());
-                    expensesSum += yearlyRecord.getAmount();
-                }else {
-                    income.put(yearlyRecord.getMonthNumber(), yearlyRecord.getAmount());
-                    incomeSum += yearlyRecord.getAmount();
-                }
+        void informationAboutTheAnnualReport () {
+            if (yearlyReport.isEmpty()) {
+                System.out.println("РЎРЅР°С‡Р°Р»Р° СЃС‡РёС‚Р°Р№С‚Рµ РіРѕРґРѕРІС‹Рµ РѕС‡С‚РµС‚С‹");
+                return;
             }
-            for (int i = 0; i < 12; i++) {
-                if (expenses.containsKey(i + 1) && income.containsKey(i + 1)){
-                    System.out.println("год: " + yearlyReport.getYear() + "\n"
-                    + "Прибыль за: " + nameMonth.get(i) + " составила: " + (income.get(i + 1) - expenses.get(i + 1)));
+            for (YearlyReport yearlyReport : yearlyReport) {
+                HashMap<Integer, Double> expenses = new HashMap<>();
+                HashMap<Integer, Double> income = new HashMap<>();
+                double expensesSum = 0;
+                double incomeSum = 0;
+                for (YearlyRecord yearlyRecord : yearlyReport.getRecords()) {
+                    if (yearlyRecord.getExpense()) {
+                        expenses.put(yearlyRecord.getMonthNumber(), yearlyRecord.getAmount());
+                        expensesSum += yearlyRecord.getAmount();
+                    } else {
+                        income.put(yearlyRecord.getMonthNumber(), yearlyRecord.getAmount());
+                        incomeSum += yearlyRecord.getAmount();
+                    }
+                }
+                for (int i = 0; i < 12; i++) {
+                    if (expenses.containsKey(i + 1) && income.containsKey(i + 1)) {
+                        System.out.println("РіРѕРґ: " + yearlyReport.getYear() + "\n"
+                                + "РџСЂРёР±С‹Р»СЊ Р·Р°: " + nameMonth.get(i) + " СЃРѕСЃС‚Р°РІРёР»Р°: " + (income.get(i + 1) - expenses.get(i + 1)));
 
+                    }
                 }
+                System.out.println("РЎСЂРµРґРЅРёР№ СЂР°СЃС…РѕРґ Р·Р° РІСЃРµ РјРµСЃСЏС†С‹ РІ РіРѕРґСѓ: " + (expensesSum / 12));
+                System.out.println("РЎСЂРµРґРЅРёР№ РґРѕС…РѕРґ Р·Р° РІСЃРµ РјРµСЃСЏС†С‹ РІ РіРѕРґСѓ: " + (incomeSum / 12));
             }
-            System.out.println("Средний расход за все месяцы в году: " + (expensesSum / 12));
-            System.out.println("Средний доход за все месяцы в году: " + (incomeSum / 12));
-        }
         }
 
 
