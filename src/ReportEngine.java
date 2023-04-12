@@ -128,7 +128,7 @@ public class ReportEngine {
                     if (yearlyRecord.getAmount() == monthIncome.get(yearlyRecord.getMonthNumber())) {
 
                     }else {
-                        System.out.println(yearlyRecord.getAmount());
+                        System.out.println("обнаружено несоответствие в месеце: " + yearlyRecord.getMonthNumber());
                         isEmpty = false;
                     }
                 }
