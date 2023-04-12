@@ -85,14 +85,14 @@ public class ReportEngine {
         addMonthlyReport(path + listOfFiles[0].getName());
         addMonthlyReport(path + listOfFiles[1].getName());
         addMonthlyReport(path + listOfFiles[2].getName());
-        System.out.println("файл успешно считан");
+        System.out.println("файлы успешно считаны");
     }
     void countAllYearlyReport(){
         File folder = new File("./resources/");
         File[] listOfFiles = folder.listFiles();
         String path = "resources/";
         addYearlyReport(path + listOfFiles[3].getName());
-
+        System.out.println("файлы успешно считаны");
     }
     void dataReconciliation() {
         if (yearlyReport.isEmpty() || monthlyReport.isEmpty()) {
